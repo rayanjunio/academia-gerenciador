@@ -13,10 +13,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class Mensalidade {
+
     public Mensalidade() {
         this.mensalidadePaga = true;
         this.dias = 7;
-
     }
 
     @Id

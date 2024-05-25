@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 @Entity
@@ -20,25 +21,25 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Aluno {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @CPF
-    @Column(nullable = false, unique = true)
-    private String cpf;
+  @CPF
+  @Column(nullable = false, unique = true)
+  private String cpf;
 
-    @NotNull
-    @NotBlank
-    @Column(columnDefinition = "VARCHAR(70) COLLATE latin1_general_ci")
-    private String name;
+  @NotNull
+  @NotBlank
+  @Column(columnDefinition = "VARCHAR(70) COLLATE latin1_general_ci")
+  private String name;
 
-    @DateTimeFormat
-    @NotNull
-    private LocalDate dataNascimento;
+  @DateTimeFormat
+  @NotNull
+  private LocalDate dataNascimento;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "mensalidade")
-    @JsonIgnore
-    private Mensalidade mensalidade;
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "mensalidade")
+  @JsonIgnore
+  private Mensalidade mensalidade;
 }

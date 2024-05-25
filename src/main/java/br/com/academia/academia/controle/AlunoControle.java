@@ -11,36 +11,36 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/alunos")
 public class AlunoControle {
 
-    @Autowired
-    private AlunoServico alunoServico;
+  @Autowired
+  private AlunoServico alunoServico;
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<?> cadastrar(@Valid @RequestBody Aluno obj){
-        return alunoServico.cadastrar(obj);
-    }
+  @PostMapping("/cadastrar")
+  public ResponseEntity<?> cadastrar(@Valid @RequestBody Aluno obj) {
+    return alunoServico.cadastrar(obj);
+  }
 
-    @GetMapping("/exibir")
-    public ResponseEntity<?> exibirTodos() {
-        return alunoServico.exibirTodos();
-    }
+  @GetMapping("/exibir")
+  public ResponseEntity<?> exibirTodos() {
+    return alunoServico.exibirTodos();
+  }
 
-    @GetMapping("/exibir-por-nome/{name}")
-    public ResponseEntity<?> exibirPorNome(@PathVariable String name) {
-        return alunoServico.exibirPorNome(name);
-    }
+  @GetMapping("/exibir-por-nome/{name}")
+  public ResponseEntity<?> exibirPorNome(@PathVariable String name) {
+    return alunoServico.exibirPorNome(name);
+  }
 
-    @GetMapping("/entrar/{id}")
-    public ResponseEntity<?> entrar(@PathVariable long id) {
-        return alunoServico.entrar(id);
-    }
+  @GetMapping("/entrar/{id}")
+  public ResponseEntity<?> entrar(@PathVariable long id) {
+    return alunoServico.entrar(id);
+  }
 
-    @PutMapping("/pagar/{id}")
-    public ResponseEntity<?> pagar(@PathVariable long id) {
-        return alunoServico.pagar(id);
-    }
+  @PutMapping("/pagar/{id}")
+  public ResponseEntity<?> pagar(@PathVariable long id) {
+    return alunoServico.pagar(id);
+  }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<?> deletar(@PathVariable long id) {
-        return alunoServico.deletar(id);
-    }
+  @DeleteMapping("/deletar/{id}")
+  public ResponseEntity<?> deletar(@PathVariable long id) {
+    return alunoServico.deletar(id);
+  }
 }

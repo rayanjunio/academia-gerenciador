@@ -16,28 +16,28 @@ import org.hibernate.validator.constraints.br.CPF;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Funcionario{
+public class Funcionario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @NotBlank
-    @NotNull
-    @Column
-    private String name;
+  @NotBlank
+  @NotNull
+  @Column
+  private String name;
 
-    @NotNull
-    @NotBlank
-    @Column(columnDefinition = "VARCHAR(70) COLLATE latin1_general_ci")
-    private String cargo;
+  @NotNull
+  @NotBlank
+  @Column(columnDefinition = "VARCHAR(70) COLLATE latin1_general_ci")
+  private String cargo;
 
-    @CPF(message = "CPF inválido!")
-    @Column(nullable = false, unique = true)
-    private String cpf;
+  @CPF(message = "CPF inválido!")
+  @Column(nullable = false, unique = true)
+  private String cpf;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "mensalidades_funcionarios")
-    @JsonIgnore
-    private MensalidadeFuncionario mensalidadeFuncionario;
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "mensalidades_funcionarios")
+  @JsonIgnore
+  private MensalidadeFuncionario mensalidadeFuncionario;
 }

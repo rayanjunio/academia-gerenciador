@@ -11,36 +11,36 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/funcionarios")
 public class FuncionarioControle {
 
-    @Autowired
-    private FuncionarioServico funcionarioServico;
+  @Autowired
+  private FuncionarioServico funcionarioServico;
 
-    @PostMapping("/cadastrar-funcionario")
-    public ResponseEntity<?> cadastrar(@Valid @RequestBody Funcionario obj) {
-        return funcionarioServico.cadastrar(obj);
-    }
+  @PostMapping("/cadastrar-funcionario")
+  public ResponseEntity<?> cadastrar(@Valid @RequestBody Funcionario obj) {
+    return funcionarioServico.cadastrar(obj);
+  }
 
-    @GetMapping("/exibir-funcionarios")
-    public ResponseEntity<?> exibirFuncionarios() {
-        return funcionarioServico.exibirFuncionarios();
-    }
+  @GetMapping("/exibir-funcionarios")
+  public ResponseEntity<?> exibirFuncionarios() {
+    return funcionarioServico.exibirFuncionarios();
+  }
 
-    @GetMapping("/listar-por-nome/{name}")
-    public ResponseEntity<?> exibirPorNome(@PathVariable String name) {
-        return funcionarioServico.exibirPorNome(name);
-    }
+  @GetMapping("/listar-por-nome/{name}")
+  public ResponseEntity<?> exibirPorNome(@PathVariable String name) {
+    return funcionarioServico.exibirPorNome(name);
+  }
 
-    @GetMapping("/entrar-funcionario/{id}")
-    public ResponseEntity<?> entrar(@PathVariable long id) {
-        return funcionarioServico.entrar(id);
-    }
+  @GetMapping("/entrar-funcionario/{id}")
+  public ResponseEntity<?> entrar(@PathVariable long id) {
+    return funcionarioServico.entrar(id);
+  }
 
-    @PatchMapping("/atualizar-cargo/{id}/{cargo}")
-    public ResponseEntity<?> mudarCargo(@PathVariable long id, @PathVariable String cargo) {
-        return funcionarioServico.mudarCargo(id, cargo);
-    }
+  @PatchMapping("/atualizar-cargo/{id}/{cargo}")
+  public ResponseEntity<?> mudarCargo(@PathVariable long id, @PathVariable String cargo) {
+    return funcionarioServico.mudarCargo(id, cargo);
+  }
 
-    @DeleteMapping("/demitir/{id}")
-    public ResponseEntity<?> demitir(@PathVariable long id) {
-        return funcionarioServico.demitir(id);
-    }
+  @DeleteMapping("/demitir/{id}")
+  public ResponseEntity<?> demitir(@PathVariable long id) {
+    return funcionarioServico.demitir(id);
+  }
 }

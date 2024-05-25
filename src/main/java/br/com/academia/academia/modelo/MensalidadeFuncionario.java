@@ -9,16 +9,17 @@ import java.util.List;
 @Table(name = "mensalidadesFuncionarios")
 @Getter
 public class MensalidadeFuncionario {
-    public MensalidadeFuncionario() {
-        this.mensalidadePaga = true;
-    }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  public MensalidadeFuncionario() {
+    this.mensalidadePaga = true;
+  }
 
-    private boolean mensalidadePaga;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @OneToMany(mappedBy = "mensalidadeFuncionario")
-    private List<Funcionario> funcionarios = new ArrayList<>();
+  private boolean mensalidadePaga;
+
+  @OneToMany(mappedBy = "mensalidadeFuncionario")
+  private List<Funcionario> funcionarios = new ArrayList<>();
 }
