@@ -25,8 +25,8 @@ public class AlunoServico {
     Mensalidade mensalidade = new Mensalidade();
     mensalidadeRepositorio.save(mensalidade);
     aluno.setMensalidade(mensalidade);
-    alunoRepositorio.save(aluno);
-    return aluno;
+    Aluno alunoCreated = alunoRepositorio.save(aluno);
+    return alunoCreated;
   }
 
   public List<Aluno> exibirTodos() {

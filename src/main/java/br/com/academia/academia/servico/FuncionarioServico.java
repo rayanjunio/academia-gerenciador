@@ -25,8 +25,8 @@ public class FuncionarioServico {
     MensalidadeFuncionario mensalidade = new MensalidadeFuncionario();
     mensalidadeRepositorio.save(mensalidade);
     funcionario.setMensalidadeFuncionario(mensalidade);
-    funcionarioRepositorio.save(funcionario);
-    return funcionario;
+    Funcionario funcionarioCreated = funcionarioRepositorio.save(funcionario);
+    return funcionarioCreated;
   }
 
   public List<Funcionario> exibirFuncionarios() {
