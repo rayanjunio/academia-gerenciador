@@ -17,9 +17,14 @@ import java.time.LocalDate;
 @Table(name = "alunos")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class Aluno {
+
+  public Aluno(String cpf, String name, LocalDate dataNascimento) {
+    this.cpf = cpf;
+    this.name = name;
+    this.dataNascimento = dataNascimento;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
