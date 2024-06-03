@@ -1,7 +1,6 @@
 package br.com.academia.academia.servico;
 
 import br.com.academia.academia.excecoes.NullIdentifierException;
-import br.com.academia.academia.excecoes.NullRegisterException;
 import br.com.academia.academia.excecoes.ObjectNotFoundException;
 import br.com.academia.academia.excecoes.PendingPaymentException;
 import br.com.academia.academia.modelo.Aluno;
@@ -24,18 +23,16 @@ public class AlunoServico {
   @Autowired
   private MensalidadeRepositorio mensalidadeRepositorio;
 
-  public ResponseEntity<?> cadastrar(Aluno obj) {
+  public ResponseEntity<?> cadastrar(Aluno aluno) {
     Mensalidade mensalidade = new Mensalidade();
     mensalidadeRepositorio.save(mensalidade);
-    obj.setMensalidade(mensalidade);
-    return new ResponseEntity<>(alunoRepositorio.save(obj), HttpStatus.CREATED);
+    aluno.setMensalidade(mensalidade);
+    return new ResponseEntity<>(alunoRepositorio.save(aluno), HttpStatus.CREATED);
   }
 
   public ResponseEntity<?> exibirTodos() {
-    if (alunoRepositorio.findAll().isEmpty()) {
-      throw new NullRegisterException();
-    }
-    return new ResponseEntity<>(alunoRepositorio.findAll(), HttpStatus.OK);
+    List<Aluno> alunos = alunoRepositorio.findAll();
+    return new ResponseEntity<>(alunos, HttpStatus.OK);
   }
 
   public ResponseEntity<?> exibirPorNome(String name) {
@@ -47,11 +44,11 @@ public class AlunoServico {
   }
 
   public ResponseEntity<?> entrar(long id) {
-    if (alunoRepositorio.findById(id) == null) {
+    Aluno aluno = alunoRepositorio.findById(id);
+    if (aluno == null) {
       throw new NullIdentifierException();
     }
-    Aluno obj = alunoRepositorio.findById(id);
-    Mensalidade mensalidade = obj.getMensalidade();
+    Mensalidade mensalidade = aluno.getMensalidade();
     if (!mensalidade.isMensalidadePaga()) {
       throw new PendingPaymentException();
     }
@@ -59,11 +56,11 @@ public class AlunoServico {
   }
 
   public ResponseEntity<?> pagar(long id) {
-    if (alunoRepositorio.findById(id) == null) {
+    Aluno aluno = alunoRepositorio.findById(id);
+    if (aluno == null) {
       throw new NullIdentifierException();
     }
-    Aluno obj = alunoRepositorio.findById(id);
-    Mensalidade mensalidade = obj.getMensalidade();
+    Mensalidade mensalidade = aluno.getMensalidade();
     mensalidade.setDias(mensalidade.getDias() + 30);
     mensalidade.setMensalidadePaga(true);
     mensalidadeRepositorio.save(mensalidade);
@@ -71,12 +68,12 @@ public class AlunoServico {
   }
 
   public ResponseEntity<?> deletar(long id) {
-    if (alunoRepositorio.findById(id) == null) {
+    Aluno aluno = alunoRepositorio.findById(id);
+    if (aluno == null) {
       throw new NullIdentifierException();
     }
-    Aluno obj = alunoRepositorio.findById(id);
-    alunoRepositorio.delete(obj);
-    Mensalidade mensalidade = obj.getMensalidade();
+    alunoRepositorio.delete(aluno);
+    Mensalidade mensalidade = aluno.getMensalidade();
     mensalidadeRepositorio.delete(mensalidade);
     return new ResponseEntity<>("Aluno deletado com sucesso!", HttpStatus.OK);
   }

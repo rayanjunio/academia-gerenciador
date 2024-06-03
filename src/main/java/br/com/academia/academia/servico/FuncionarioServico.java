@@ -1,7 +1,6 @@
 package br.com.academia.academia.servico;
 
 import br.com.academia.academia.excecoes.NullIdentifierException;
-import br.com.academia.academia.excecoes.NullRegisterException;
 import br.com.academia.academia.excecoes.ObjectNotFoundException;
 import br.com.academia.academia.excecoes.PendingPaymentException;
 import br.com.academia.academia.modelo.Funcionario;
@@ -32,10 +31,8 @@ public class FuncionarioServico {
   }
 
   public ResponseEntity<?> exibirFuncionarios() {
-    if (funcionarioRepositorio.findAll().isEmpty()) {
-      throw new NullRegisterException();
-    }
-    return new ResponseEntity<>(funcionarioRepositorio.findAll(), HttpStatus.OK);
+    List<Funcionario> funcionarios = funcionarioRepositorio.findAll();
+    return new ResponseEntity<>(funcionarios, HttpStatus.OK);
   }
 
   public ResponseEntity<?> exibirPorNome(String name) {
@@ -47,11 +44,11 @@ public class FuncionarioServico {
   }
 
   public ResponseEntity<?> entrar(long id) {
-    if (funcionarioRepositorio.findById(id) == null) {
+    Funcionario funcionario = funcionarioRepositorio.findById(id);
+    if (funcionario == null) {
       throw new NullIdentifierException();
     }
-    Funcionario obj = funcionarioRepositorio.findById(id);
-    MensalidadeFuncionario mensalidadeFuncionario = obj.getMensalidadeFuncionario();
+    MensalidadeFuncionario mensalidadeFuncionario = funcionario.getMensalidadeFuncionario();
     if (!mensalidadeFuncionario.isMensalidadePaga()) {
       throw new PendingPaymentException();
     }
@@ -59,21 +56,21 @@ public class FuncionarioServico {
   }
 
   public ResponseEntity<?> mudarCargo(long id, String cargo) {
-    if (funcionarioRepositorio.findById(id) == null) {
+    Funcionario funcionario = funcionarioRepositorio.findById(id);
+    if (funcionario == null) {
       throw new NullIdentifierException();
     }
-    Funcionario obj = funcionarioRepositorio.findById(id);
-    obj.setCargo(cargo);
-    return new ResponseEntity<>(funcionarioRepositorio.save(obj), HttpStatus.OK);
+    funcionario.setCargo(cargo);
+    return new ResponseEntity<>(funcionarioRepositorio.save(funcionario), HttpStatus.OK);
   }
 
   public ResponseEntity<?> demitir(long id) {
-    if (funcionarioRepositorio.findById(id) == null) {
+    Funcionario funcionario = funcionarioRepositorio.findById(id);
+    if (funcionario == null) {
       throw new NullIdentifierException();
     }
-    Funcionario obj = funcionarioRepositorio.findById(id);
-    funcionarioRepositorio.delete(obj);
-    MensalidadeFuncionario mensalidade = obj.getMensalidadeFuncionario();
+    funcionarioRepositorio.delete(funcionario);
+    MensalidadeFuncionario mensalidade = funcionario.getMensalidadeFuncionario();
     mensalidadeRepositorio.delete(mensalidade);
     return new ResponseEntity<>("Funcionário demitido com sucesso!", HttpStatus.OK);
   }

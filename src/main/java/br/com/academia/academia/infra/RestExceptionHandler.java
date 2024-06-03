@@ -33,12 +33,6 @@ public class RestExceptionHandler {
     return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);
   }
 
-  @ExceptionHandler(NullRegisterException.class)
-  public ResponseEntity<RestErrorMessage> nullRegisterHandler(NullRegisterException exception) {
-    RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
-    return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);
-  }
-
   @ExceptionHandler(NullIdentifierException.class)
   public ResponseEntity<RestErrorMessage> nullIdentifierHandler(NullIdentifierException exception) {
     RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
