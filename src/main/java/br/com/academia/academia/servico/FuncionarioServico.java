@@ -8,8 +8,6 @@ import br.com.academia.academia.modelo.MensalidadeFuncionario;
 import br.com.academia.academia.repositorio.FuncionarioRepositorio;
 import br.com.academia.academia.repositorio.MensalidadeFuncionarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,27 +21,28 @@ public class FuncionarioServico {
   @Autowired
   private MensalidadeFuncionarioRepositorio mensalidadeRepositorio;
 
-  public ResponseEntity<?> cadastrar(Funcionario obj) {
+  public Funcionario cadastrar(Funcionario funcionario) {
     MensalidadeFuncionario mensalidade = new MensalidadeFuncionario();
     mensalidadeRepositorio.save(mensalidade);
-    obj.setMensalidadeFuncionario(mensalidade);
-    return new ResponseEntity<>(funcionarioRepositorio.save(obj), HttpStatus.CREATED);
+    funcionario.setMensalidadeFuncionario(mensalidade);
+    funcionarioRepositorio.save(funcionario);
+    return funcionario;
   }
 
-  public ResponseEntity<?> exibirFuncionarios() {
+  public List<Funcionario> exibirFuncionarios() {
     List<Funcionario> funcionarios = funcionarioRepositorio.findAll();
-    return new ResponseEntity<>(funcionarios, HttpStatus.OK);
+    return funcionarios;
   }
 
-  public ResponseEntity<?> exibirPorNome(String name) {
+  public List<Funcionario> exibirPorNome(String name) {
     List<Funcionario> funcionarios = funcionarioRepositorio.findByNameContaining(name);
     if (funcionarios.isEmpty()) {
       throw new ObjectNotFoundException();
     }
-    return new ResponseEntity<>(funcionarios, HttpStatus.OK);
+    return funcionarios;
   }
 
-  public ResponseEntity<?> entrar(long id) {
+  public String entrar(long id) {
     Funcionario funcionario = funcionarioRepositorio.findById(id);
     if (funcionario == null) {
       throw new NullIdentifierException();
@@ -52,19 +51,20 @@ public class FuncionarioServico {
     if (!mensalidadeFuncionario.isMensalidadePaga()) {
       throw new PendingPaymentException();
     }
-    return new ResponseEntity<>("Entrada autorizada", HttpStatus.OK);
+    return "Entrada autorizada";
   }
 
-  public ResponseEntity<?> mudarCargo(long id, String cargo) {
+  public Funcionario mudarCargo(long id, String cargo) {
     Funcionario funcionario = funcionarioRepositorio.findById(id);
     if (funcionario == null) {
       throw new NullIdentifierException();
     }
     funcionario.setCargo(cargo);
-    return new ResponseEntity<>(funcionarioRepositorio.save(funcionario), HttpStatus.OK);
+    funcionarioRepositorio.save(funcionario);
+    return funcionario;
   }
 
-  public ResponseEntity<?> demitir(long id) {
+  public String demitir(long id) {
     Funcionario funcionario = funcionarioRepositorio.findById(id);
     if (funcionario == null) {
       throw new NullIdentifierException();
@@ -72,7 +72,7 @@ public class FuncionarioServico {
     funcionarioRepositorio.delete(funcionario);
     MensalidadeFuncionario mensalidade = funcionario.getMensalidadeFuncionario();
     mensalidadeRepositorio.delete(mensalidade);
-    return new ResponseEntity<>("Funcionário demitido com sucesso!", HttpStatus.OK);
+    return "Funcionário demitido com sucesso!";
   }
 }
 
