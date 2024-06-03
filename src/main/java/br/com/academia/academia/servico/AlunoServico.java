@@ -8,8 +8,6 @@ import br.com.academia.academia.modelo.Mensalidade;
 import br.com.academia.academia.repositorio.AlunoRepositorio;
 import br.com.academia.academia.repositorio.MensalidadeRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,27 +21,28 @@ public class AlunoServico {
   @Autowired
   private MensalidadeRepositorio mensalidadeRepositorio;
 
-  public ResponseEntity<?> cadastrar(Aluno aluno) {
+  public Aluno cadastrar(Aluno aluno) {
     Mensalidade mensalidade = new Mensalidade();
     mensalidadeRepositorio.save(mensalidade);
     aluno.setMensalidade(mensalidade);
-    return new ResponseEntity<>(alunoRepositorio.save(aluno), HttpStatus.CREATED);
+    alunoRepositorio.save(aluno);
+    return aluno;
   }
 
-  public ResponseEntity<?> exibirTodos() {
+  public List<Aluno> exibirTodos() {
     List<Aluno> alunos = alunoRepositorio.findAll();
-    return new ResponseEntity<>(alunos, HttpStatus.OK);
+    return alunos;
   }
 
-  public ResponseEntity<?> exibirPorNome(String name) {
+  public List<Aluno> exibirPorNome(String name) {
     List<Aluno> alunos = alunoRepositorio.findByNameContaining(name);
     if (alunos.isEmpty()) {
       throw new ObjectNotFoundException();
     }
-    return new ResponseEntity<>(alunos, HttpStatus.OK);
+    return alunos;
   }
 
-  public ResponseEntity<?> entrar(long id) {
+  public String entrar(long id) {
     Aluno aluno = alunoRepositorio.findById(id);
     if (aluno == null) {
       throw new NullIdentifierException();
@@ -52,10 +51,10 @@ public class AlunoServico {
     if (!mensalidade.isMensalidadePaga()) {
       throw new PendingPaymentException();
     }
-    return new ResponseEntity<>("Entrada autorizada", HttpStatus.OK);
+    return "Entrada autorizada";
   }
 
-  public ResponseEntity<?> pagar(long id) {
+  public String pagar(long id) {
     Aluno aluno = alunoRepositorio.findById(id);
     if (aluno == null) {
       throw new NullIdentifierException();
@@ -64,10 +63,10 @@ public class AlunoServico {
     mensalidade.setDias(mensalidade.getDias() + 30);
     mensalidade.setMensalidadePaga(true);
     mensalidadeRepositorio.save(mensalidade);
-    return new ResponseEntity<>("Mensalidade paga com sucesso!", HttpStatus.OK);
+    return "Mensalidade paga com sucesso!";
   }
 
-  public ResponseEntity<?> deletar(long id) {
+  public String deletar(long id) {
     Aluno aluno = alunoRepositorio.findById(id);
     if (aluno == null) {
       throw new NullIdentifierException();
@@ -75,6 +74,6 @@ public class AlunoServico {
     alunoRepositorio.delete(aluno);
     Mensalidade mensalidade = aluno.getMensalidade();
     mensalidadeRepositorio.delete(mensalidade);
-    return new ResponseEntity<>("Aluno deletado com sucesso!", HttpStatus.OK);
+    return "Aluno deletado com sucesso!";
   }
 }
