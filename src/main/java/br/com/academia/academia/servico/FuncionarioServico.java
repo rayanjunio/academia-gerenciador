@@ -1,8 +1,7 @@
 package br.com.academia.academia.servico;
 
+import br.com.academia.academia.excecoes.InvalidInformationException;
 import br.com.academia.academia.excecoes.NullIdentifierException;
-import br.com.academia.academia.excecoes.ObjectNotFoundException;
-import br.com.academia.academia.excecoes.PendingPaymentException;
 import br.com.academia.academia.modelo.Funcionario;
 import br.com.academia.academia.modelo.MensalidadeFuncionario;
 import br.com.academia.academia.repositorio.FuncionarioRepositorio;
@@ -22,6 +21,9 @@ public class FuncionarioServico {
   private MensalidadeFuncionarioRepositorio mensalidadeRepositorio;
 
   public Funcionario cadastrar(Funcionario funcionario) {
+    if (funcionario.getName().isEmpty() || funcionario.getCargo().isEmpty() || funcionario.getCpf().isEmpty()) {
+      throw new InvalidInformationException("Check the employee data");
+    }
     MensalidadeFuncionario mensalidade = new MensalidadeFuncionario();
     mensalidadeRepositorio.save(mensalidade);
     funcionario.setMensalidadeFuncionario(mensalidade);
@@ -37,7 +39,7 @@ public class FuncionarioServico {
   public List<Funcionario> exibirPorNome(String name) {
     List<Funcionario> funcionarios = funcionarioRepositorio.findByNameContaining(name);
     if (funcionarios.isEmpty()) {
-      throw new ObjectNotFoundException();
+      throw new NullIdentifierException("There is not employees with this name");
     }
     return funcionarios;
   }
@@ -46,10 +48,6 @@ public class FuncionarioServico {
     Funcionario funcionario = funcionarioRepositorio.findById(id);
     if (funcionario == null) {
       throw new NullIdentifierException();
-    }
-    MensalidadeFuncionario mensalidadeFuncionario = funcionario.getMensalidadeFuncionario();
-    if (!mensalidadeFuncionario.isMensalidadePaga()) {
-      throw new PendingPaymentException();
     }
     return "Entrada autorizada";
   }

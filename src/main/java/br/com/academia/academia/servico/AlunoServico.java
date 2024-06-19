@@ -1,7 +1,7 @@
 package br.com.academia.academia.servico;
 
+import br.com.academia.academia.excecoes.InvalidInformationException;
 import br.com.academia.academia.excecoes.NullIdentifierException;
-import br.com.academia.academia.excecoes.ObjectNotFoundException;
 import br.com.academia.academia.excecoes.PendingPaymentException;
 import br.com.academia.academia.modelo.Aluno;
 import br.com.academia.academia.modelo.Mensalidade;
@@ -10,6 +10,7 @@ import br.com.academia.academia.repositorio.MensalidadeRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,6 +23,9 @@ public class AlunoServico {
   private MensalidadeRepositorio mensalidadeRepositorio;
 
   public Aluno cadastrar(Aluno aluno) {
+    if (aluno.getName().isEmpty() || aluno.getCpf().isBlank() || aluno.getDataNascimento().isAfter(LocalDate.now())) {
+      throw new InvalidInformationException("Check the gym member data!");
+    }
     Mensalidade mensalidade = new Mensalidade();
     mensalidadeRepositorio.save(mensalidade);
     aluno.setMensalidade(mensalidade);
@@ -37,7 +41,7 @@ public class AlunoServico {
   public List<Aluno> exibirPorNome(String name) {
     List<Aluno> alunos = alunoRepositorio.findByNameContaining(name);
     if (alunos.isEmpty()) {
-      throw new ObjectNotFoundException();
+      throw new NullIdentifierException("There is not gym members with those characters");
     }
     return alunos;
   }
