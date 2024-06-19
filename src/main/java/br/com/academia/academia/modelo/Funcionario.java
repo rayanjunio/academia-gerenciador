@@ -18,6 +18,12 @@ import org.hibernate.validator.constraints.br.CPF;
 @AllArgsConstructor
 public class Funcionario {
 
+  public Funcionario(String name, String cargo, String cpf) {
+    this.name = name;
+    this.cargo = cargo;
+    this.cpf = cpf;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;

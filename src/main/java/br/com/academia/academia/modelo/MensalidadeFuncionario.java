@@ -2,12 +2,15 @@ package br.com.academia.academia.modelo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "mensalidadesFuncionarios")
 @Getter
+@Setter
 public class MensalidadeFuncionario {
 
   public MensalidadeFuncionario() {

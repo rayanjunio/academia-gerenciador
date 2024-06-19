@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @Table(name = "alunos")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Aluno {
 
