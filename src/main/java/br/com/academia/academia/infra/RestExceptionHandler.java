@@ -27,9 +27,9 @@ public class RestExceptionHandler {
     return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);
   }
 
-  @ExceptionHandler(ObjectNotFoundException.class)
-  public ResponseEntity<RestErrorMessage> objectNotFoundHandler(ObjectNotFoundException exception) {
-    RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+  @ExceptionHandler(InvalidInformationException.class)
+  public ResponseEntity<RestErrorMessage> invalidInformationHandler(InvalidInformationException exception) {
+    RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.NOT_ACCEPTABLE, exception.getMessage());
     return ResponseEntity.status(errorMessage.getStatus()).body(errorMessage);
   }
 
